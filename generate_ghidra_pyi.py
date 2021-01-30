@@ -1,6 +1,13 @@
 # Generate .pyi's for Ghidra.
 # @category: IDE Helpers
+
 from __future__ import print_function
+
+import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
+
 import type_formatter
 
 import ghidra
