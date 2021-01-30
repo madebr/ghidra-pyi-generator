@@ -1,0 +1,32 @@
+name: Create .pyi bindings for ghidra.
+on:
+  pull_request:
+  release:
+  push:
+jobs:
+  create_pyi:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 2.x
+      - name: Install python dependencies
+        run: |
+          pip install attrs typing
+      - name: Generate python.pth
+        run: |
+          jython_site_packages="~/.local/lib/jython2.7/site-packages"
+          mkdir -p $jython_site_packages
+          python -c "import site; print(site.getusersitepackages()); print(site.getsitepackages()[-1])" > $jython_site_packages/python.pth
+      - uses: actions/setup-java@v1
+        with:
+          java-version: 11.0.x
+          java-package: jdk
+      - uses: er28-0652/setup-ghidra@master
+        with:
+          version: latest
+      - name: Run generate_ghidra_pyi.py script using headless ghidra
+        run: |
+          ls -al "$GHIDRA_INSTALL_DIR"
+          $GHIDRA_INSTALL_DIR/support/analyzeHeadless . dummy_project -preScript ${{ github.workspace }}/generate_ghidra_pyi.py
