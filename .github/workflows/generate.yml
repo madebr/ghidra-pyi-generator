@@ -24,8 +24,8 @@ jobs:
           java-version: 11.0.x
           java-package: jdk
       - uses: er28-0652/setup-ghidra@master
-#        with:
-#          version: latest
+        with:
+          version: "9.2.2"
       - name: Run generate_ghidra_pyi.py script using headless ghidra
         run: |
           ls -al "$GHIDRA_INSTALL_DIR"
